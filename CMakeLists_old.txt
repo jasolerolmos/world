@@ -1,0 +1,49 @@
+# Establecer la versión mínima de CMake
+cmake_minimum_required(VERSION 3.10)
+
+# Establecer el nombre del proyecto
+project(ServerProject)
+
+# Establecer la versión de C++
+set(CMAKE_CXX_STANDARD 11)
+
+# Encontrar Boost en tu sistema
+find_package(Boost REQUIRED)
+
+# Incluir el directorio de cabeceras de Boost
+include_directories(${Boost_INCLUDE_DIRS})
+
+# Incluir los archivos de cabecera de tu proyecto
+include_directories(${PROJECT_SOURCE_DIR})
+
+# Usar pkg-config
+find_package(PkgConfig REQUIRED)
+
+# Buscar OpenCV usando pkg-config
+pkg_check_modules(OPENCV REQUIRED opencv4)
+
+# Incluir los directorios de OpenCV
+include_directories(${OPENCV_INCLUDE_DIRS})
+
+# Agregar las bibliotecas de OpenCV
+link_directories(${OPENCV_LIBRARY_DIRS})
+
+# Incluir directorios de Boost
+include_directories("/opt/homebrew/Cellar/boost/1.86.0_2/include/")
+
+# Agregar las bibliotecas de Boost
+link_directories("/usr/local/lib")
+target_link_libraries(server3 ${OPENCV_LIBRARIES} boost_system)
+
+# Especificar los archivos fuente
+set(SOURCES
+    server3.cpp
+    World.cpp
+    PerlinNoise.cpp
+)
+
+# Crear el ejecutable
+add_executable(server ${SOURCES})
+
+# Enlazar las bibliotecas de Boost y otras dependencias necesarias
+target_link_libraries(server3 ${Boost_LIBRARIES} pthread ${OPENCV_LIBRARIES} boost_system)

@@ -1,0 +1,33 @@
+# Versión mínima de CMake
+cmake_minimum_required(VERSION 3.10)
+
+# Nombre del proyecto
+project(BoostOpenCVExample)
+
+# Establecer la versión de C++ requerida
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Incluir directorios para Boost y OpenCV
+include_directories(/opt/homebrew/Cellar/boost/1.86.0_2/include/)
+include_directories(./)
+include_directories(/opt/homebrew/opt/ncurses/include/)
+
+# Añadir las rutas de las bibliotecas
+link_directories(/usr/local/lib /opt/homebrew/Cellar/boost/1.87.0/lib/ /opt/homebrew/opt/ncurses/lib)
+
+# Buscar OpenCV automáticamente usando pkg-config
+find_package(OpenCV REQUIRED)
+
+# Definir el ejecutable para el cliente
+add_executable(gui gui2.cpp Client.cpp)
+target_link_libraries(gui PRIVATE ${OpenCV_LIBS} boost_system pthread)
+
+# Definir el ejecutable para el cliente
+add_executable(cliente cliente3.cpp Client.cpp)
+#target_compile_options(cliente PRIVATE -std=c++11)
+target_link_libraries(cliente PRIVATE ${OpenCV_LIBS} boost_system pthread)
+
+# Definir el ejecutable para el servidor
+add_executable(server server3.cpp Personaje.cpp World.cpp PerlinNoise.cpp)
+target_link_libraries(server PRIVATE ${OpenCV_LIBS} boost_system pthread)
